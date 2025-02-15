@@ -1,48 +1,58 @@
 name: Update Adobe List
 
 on:
+  push:
+    branches:
+      - main  # 触发在 main 分支的 push 事件
   schedule:
-    - cron: '0 0 * * *'  # 每天凌晨执行一次
-  workflow_dispatch:  # 允许手动触发
+    - cron: '0 0 * * *'  # 每天凌晨执行一次更新操作
+  workflow_dispatch:  # 支持手动触发
+
+permissions:
+  contents: write  # 需要 GitHub Actions 推送内容的写权限
 
 jobs:
-  update-list:
-    runs-on: ubuntu-latest
+  update-adobe:
+    runs-on: ubuntu-latest  # 在 Ubuntu 环境下运行任务
 
     steps:
+      # 1. 检出代码
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2. 安装 yq，用于解析 YAML 文件
       - name: Install yq
         run: |
           sudo apt-get install -y jq
-          # 安装 yq 命令行工具
           wget https://github.com/mikefarah/yq/releases/download/v4.16.1/yq_linux_amd64 -O /usr/local/bin/yq
           chmod +x /usr/local/bin/yq
 
+      # 3. 获取 clash.yaml 文件
       - name: Fetch clash.yaml
         run: |
           curl -o clash.yaml https://raw.githubusercontent.com/ignaciocastro/a-dove-is-dumb/main/clash.yaml
 
+      # 4. 创建目标目录
       - name: Create directory for adobe.list
         run: |
-          mkdir -p rule/adobe  # 创建 rule/adobe 目录
+          mkdir -p rule/adobe  # 创建 rule/adobe 目录，如果不存在的话
 
+      # 5. 转换 clash.yaml 文件为 adobe.list 格式
       - name: Convert clash.yaml to adobe.list format
         run: |
-          # 获取 YAML 中的所有域名列表并转换为 adobe.list 格式
           echo '#规则数量: 1305' > rule/adobe/adobe.list
           echo '#不支持的规则数量: 0' >> rule/adobe/adobe.list
           echo '#已排除的规则数量: 0' >> rule/adobe/adobe.list
           echo -e "\n#-----------------以下为解析后的规则-----------------#" >> rule/adobe/adobe.list
-
+          
           # 提取所有的域名并写入文件
           yq '.domains[]' clash.yaml | sed 's/^/DOMAIN,/' >> rule/adobe/adobe.list
 
+      # 6. 提交并推送更改
       - name: Commit and push changes
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add rule/adobe/adobe.list
-          git commit -m "Update adobe list"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Ahua9527/Surge.git
+          git commit -m 'Update adobe list'
+          git push
