@@ -1,8 +1,3 @@
-#规则数量: 1305
-#不支持的规则数量: 0
-#已排除的规则数量: 0
-
-#-----------------以下为解析后的规则-----------------#
 # These IPs will only block the telemetry check of Adobe apps,
 # and shouldn't interfere with any other network option,
 # such as AI generation, downloads, etc.
