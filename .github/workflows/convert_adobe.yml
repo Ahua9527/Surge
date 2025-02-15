@@ -41,7 +41,7 @@ jobs:
           echo -e "\n#-----------------以下为解析后的规则-----------------#" >> rule/adobe/adobe.list
           
           # 使用 sed 进行全文替换，把 - DOMAIN, 替换为 DOMAIN,
-          sed 's/^-\sDOMAIN,*/DOMAIN,/' clash.yaml >> rule/adobe/adobe.list
+          sed 's/^\s*-\s*DOMAIN,/DOMAIN,/' clash.yaml >> rule/adobe/adobe.list
 
       - name: Commit and push changes
         run: |
