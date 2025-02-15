@@ -28,12 +28,12 @@ jobs:
         run: |
           # 获取 YAML 中的所有域名列表并转换为 adobe.list 格式
           echo '#规则数量: 1305' > adobe/adobe.list
-          echo '#不支持的规则数量: 0' >> adobe/adobe.list
-          echo '#已排除的规则数量: 0' >> adobe/adobe.list
-          echo -e "\n#-----------------以下为解析后的规则-----------------#" >> adobe/adobe.list
+          echo '#不支持的规则数量: 0' >> rule/adobe/adobe.list
+          echo '#已排除的规则数量: 0' >> rule/adobe/adobe.list
+          echo -e "\n#-----------------以下为解析后的规则-----------------#" >> rule/adobe/adobe.list
 
           # 提取所有的域名并写入文件
-          yq '.domains[]' clash.yaml | sed 's/^/DOMAIN,/' >> adobe/adobe.list
+          yq '.domains[]' clash.yaml | sed 's/^/DOMAIN,/' >> rule/adobe/adobe.list
 
       - name: Commit and push changes
         run: |
