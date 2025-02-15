@@ -1,0 +1,8 @@
+#Qtake Stream
+#保证Qtake Stream，Qtake Cloud Stream，QTAKE SYNC，QTAKE Cloud SYNC始终保持直连
+
+# > SUFFIX
+DOMAIN-SUFFIX,qtake.cloud,DIRECT
+DOMAIN-SUFFIX,qtake.live,DIRECT
+DOMAIN-SUFFIX,qtake.com,DIRECT
+
