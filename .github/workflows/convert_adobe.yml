@@ -44,9 +44,9 @@ jobs:
           echo '#不支持的规则数量: 0' >> rule/adobe/adobe.list
           echo '#已排除的规则数量: 0' >> rule/adobe/adobe.list
           echo -e "\n#-----------------以下为解析后的规则-----------------#" >> rule/adobe/adobe.list
-          
-          # 提取所有的域名并写入文件
-          yq '.domains[]' clash.yaml | sed 's/^/DOMAIN,/' >> rule/adobe/adobe.list
+
+          # 提取所有的域名并转换为 DOMAIN,xxx 格式
+          yq '.rules[] | select(.type == "DOMAIN-SUFFIX") | .value' clash.yaml | sed 's/^/DOMAIN,/' >> rule/adobe/adobe.list
 
       # 6. 提交并推送更改
       - name: Commit and push changes
