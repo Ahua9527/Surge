@@ -1,4 +1,4 @@
-name: Convert Adobe List
+name: Update Adobe List
 
 on:
   schedule:
@@ -16,7 +16,8 @@ jobs:
       - name: Install yq
         run: |
           sudo apt-get install -y jq
-          wget https://github.com/mikefarah/yq/releases/download/v4.15.0/yq_linux_amd64 -O /usr/local/bin/yq
+          # 安装 yq 命令行工具
+          wget https://github.com/mikefarah/yq/releases/download/v4.16.1/yq_linux_amd64 -O /usr/local/bin/yq
           chmod +x /usr/local/bin/yq
 
       - name: Fetch clash.yaml
